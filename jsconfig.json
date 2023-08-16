@@ -1,0 +1,11 @@
+{
+  "include": ["./src/**/*", "json", "./mock/**/*"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "#/*": ["."]
+    },
+    "types": ["element-plus/global"]
+  }
+}

@@ -1,0 +1,36 @@
+html,
+body,
+#app {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+
+}
+
+html.normal{
+  --el-menu-bg-color: #3f465d;
+  --el-menu-hover-bg-color: #035165;
+  --mian-app-bg:#c0c1c347;
+  --box-shadow-color: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.el-menu-item.is-active {
+  position: relative;
+  background-color: #409eff10;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.column-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.el-table .el-table__cell{
+  z-index: inherit !important;
+}
