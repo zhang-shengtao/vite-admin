@@ -6,6 +6,7 @@
 
 <script setup>
 import { sliceFile } from "@/utils/method.js";
+
 function fileUpload() {
   const input = document.createElement("input");
   input.type = "file";

@@ -1,5 +1,6 @@
 import Clipboard from "clipboard";
 import SparkMD5 from "spark-md5";
+import myWorkerjs from "./sliceFile.js?raw";
 
 /**
  * 判断类型
@@ -128,19 +129,19 @@ export function debounceRef(value = "", t = 1000) {
  * @returns {Array} Array
  */
 export function sliceFile(file) {
-  // console.time("分片耗时");
+  console.time("分片耗时");
   // if(!Array.isArray(file)) file = [file]
   const spark = new SparkMD5.ArrayBuffer();
   const fileList = [];
   const size = 1024 * 1024 * 5; // 每片大小2M
   const sliceFileTotal = Math.ceil(file.size / size); // 总共要切多少片
-
   const cupNum = navigator.hardwareConcurrency; // cup核心数
-  const myWorker = new Worker("./sliceFile.js");
-  myWorker.postMessage('主线程得消息');
+
+  const myWorker = new Worker(window.URL.createObjectURL(new Blob([myWorkerjs], { type: "application/javascript" })));
+  myWorker.postMessage("主线程得消息");
   myWorker.onmessage = function (e) {
     console.log(e.data);
-    myWorker.terminate()
+    myWorker.terminate();
   };
 
   let start = 0;
@@ -159,7 +160,7 @@ export function sliceFile(file) {
         index: i,
         hash: spark.end()
       });
-      // if (i + 1 >= sliceFileTotal) console.log(fileList);
+      if (i + 1 >= sliceFileTotal) console.log(fileList);
     };
     fileReader.readAsArrayBuffer(blob);
   }
