@@ -13,10 +13,12 @@
         </template>
       </Tabels>
     </el-card>
+    {{ n }}
   </div>
 </template>
 
 <script setup name="home">
+import { debounceRef } from "@/utils/method";
 const url = "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg";
 const tableData = [
   {
@@ -44,7 +46,7 @@ const tableData = [
     url
   }
 ];
-const n = ref("");
+const n = debounceRef("", 500);
 
 const tabelHeaders = [
   {

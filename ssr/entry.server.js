@@ -1,5 +1,4 @@
 const [pending, resolved, fulfilled] = ["pending", "fulfilled", "rejected"];
-
 class myPromise {
   #PromiseState = pending;
   #PromiseResult = undefined;
@@ -72,7 +71,6 @@ class myPromise {
       }
     }
   }
-
   then(onResolve, onReject) {
     return new myPromise((resolve, reject) => {
       this.#hendler.push({ onResolve, onReject, resolve, reject });

@@ -1,4 +1,5 @@
 import Clipboard from "clipboard";
+import SparkMD5 from "spark-md5";
 
 /**
  * 判断类型
@@ -80,9 +81,9 @@ export function IsPC() {
 
 /**
  * js上传文件
- * @param multiple  是否多选 {Boolean}
- * @param accept  文件后缀名限制 {String}
- * @returns Promise
+ * @param {Boolean} multiple  是否多选 {Boolean}
+ * @param {String} accept  文件后缀名限制 {String}
+ * @returns {Promise}
  */
 export function file({ multiple = false, accept = "image/*" } = { multiple: false, accept: "image/*" }) {
   return new Promise((resolve, reject) => {
@@ -104,4 +105,64 @@ export function file({ multiple = false, accept = "image/*" } = { multiple: fals
       flieList = null;
     }
   });
+}
+
+export function debounceRef(value = "", t = 1000) {
+  return customRef((track, trigger) => {
+    return {
+      get() {
+        track();
+        return value;
+      },
+      set(val) {
+        trigger();
+        value = val;
+      }
+    };
+  });
+}
+
+/**
+ * 文件切割
+ * @param { File | Array[File] } file   是否多选 { File | Array[File] }
+ * @returns {Array} Array
+ */
+export function sliceFile(file) {
+  // console.time("分片耗时");
+  // if(!Array.isArray(file)) file = [file]
+  const spark = new SparkMD5.ArrayBuffer();
+  const fileList = [];
+  const size = 1024 * 1024 * 5; // 每片大小2M
+  const sliceFileTotal = Math.ceil(file.size / size); // 总共要切多少片
+
+  const cupNum = navigator.hardwareConcurrency; // cup核心数
+  const myWorker = new Worker("./sliceFile.js");
+  myWorker.postMessage('主线程得消息');
+  myWorker.onmessage = function (e) {
+    console.log(e.data);
+    myWorker.terminate()
+  };
+
+  let start = 0;
+  let end = 0;
+  for (let i = 0; i < sliceFileTotal; i++) {
+    start = i * size;
+    end = (i + 1) * size >= file.size ? file.size : (i + 1) * size;
+    const fileReader = new FileReader();
+    const blob = file.slice(start, end, file.type);
+    fileReader.onload = (e) => {
+      spark.append(e.target.result);
+      fileList.push({
+        blob,
+        start,
+        end,
+        index: i,
+        hash: spark.end()
+      });
+      // if (i + 1 >= sliceFileTotal) console.log(fileList);
+    };
+    fileReader.readAsArrayBuffer(blob);
+  }
+  // console.log(file);
+  console.timeEnd("分片耗时");
 }
