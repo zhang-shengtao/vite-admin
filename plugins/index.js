@@ -67,7 +67,8 @@ export default function () {
       imports: ["vue", "vue-router", "pinia"]
     }),
     visualizer({
-      // open: true
+      open: true,
+      file: "stats.html"
     }),
     {
       ...externalGlobals({
