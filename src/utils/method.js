@@ -106,7 +106,13 @@ export function file({ multiple = false, accept = "image/*" } = { multiple: fals
   });
 }
 
+/**
+ * 防抖ref
+ *@param value 绑定的默认值
+ *@param t 多久后更改数据
+ */
 export function debounceRef(value = "", t = 1000) {
+  let time;
   return customRef((track, trigger) => {
     return {
       get() {
@@ -114,8 +120,11 @@ export function debounceRef(value = "", t = 1000) {
         return value;
       },
       set(val) {
-        trigger();
-        value = val;
+        if (time) clearTimeout(time);
+        time = setTimeout(() => {
+          trigger();
+          value = val;
+        }, t);
       }
     };
   });
