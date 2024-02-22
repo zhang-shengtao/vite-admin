@@ -1,6 +1,5 @@
 import Clipboard from "clipboard";
 import myWorkerjs from "./sliceFile.js?raw";
-
 /**
  * 判断类型
  * @param value 要判断的值
@@ -125,27 +124,56 @@ export function debounceRef(value = "", t = 1000) {
 /**
  * 文件切割
  * @param { File | Array[File] } file   是否多选 { File | Array[File] }
- * @returns {Array} Array
+ * @param {Number} point 断点续传的分片位置
+ * @returns {Array} Array[Object]
  */
-export function sliceFile(file) {
-  console.time("分片耗时");
-  const fileList = [];
-  const size = 1024 * 1024 * 5; // 每片大小2M
-  const sliceFileTotal = Math.ceil(file.size / size); // 总共要切多少片
-  const cupNum = navigator.hardwareConcurrency; // cup核心数
-
-  // for (let index = 0; index < cupNum; index++) {
-  //   const myWorker = new Worker(window.URL.createObjectURL(new Blob([myWorkerjs], { type: "application/javascript" })));
-  //   myWorker.postMessage({
-  //     file,
-
-  //   });
-  //   myWorker.onmessage = function (e) {
-  //     console.log(e.data);
-  //     myWorker.terminate();
-  //   };
-  // }
-
-  // console.log(file);
-  console.timeEnd("分片耗时");
+export function sliceFile(file, point = 0) {
+  return new Promise((resolve) => {
+    let fileList = [];
+    const size = 1024 * 1024 * 10; // 每片大小10M
+    const sliceFileTotal = Math.ceil(file.size / size); // 总共要切多少片
+    let cupNum = navigator.hardwareConcurrency; // 需要开启得线程(cup核心数)
+    if (sliceFileTotal < cupNum) cupNum = sliceFileTotal;
+    let remainder = sliceFileTotal % cupNum; // 多出来得分片数量
+    const fragmentation = (sliceFileTotal - remainder) / cupNum; // 每一个线程需要分几片
+    let start = 0;
+    let end = 0;
+    const promiseAll = [];
+    for (let index = 0; index < cupNum; index++) {
+      const p = new Promise((res) => {
+        const myWorker = new Worker(new URL("./sliceFile.js", import.meta.url), { type: "module" });
+        end = start + fragmentation + (remainder > 0 ? 1 : 0);
+        if (remainder > 0) remainder--;
+        myWorker.postMessage({
+          file,
+          size,
+          start,
+          end,
+          sliceFileTotal
+        });
+        myWorker.onmessage = function (e) {
+          res(e.data);
+          myWorker.terminate();
+        };
+        start = end;
+      });
+      promiseAll.push(p);
+    }
+    Promise.all(promiseAll).then((res) => {
+      res.forEach((arr) => {
+        if (fileList.length) {
+          const i = fileList[fileList.length - 1].fragmentationIndex;
+          const index = arr[0].fragmentationIndex;
+          if (i < index) {
+            fileList = fileList.concat(arr);
+          } else {
+            fileList = arr.concat(fileList);
+          }
+        } else {
+          fileList = fileList.concat(arr);
+        }
+      });
+      resolve(fileList);
+    });
+  });
 }

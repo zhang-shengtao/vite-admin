@@ -10,15 +10,16 @@ import { sliceFile } from "@/utils/method.js";
 function fileUpload() {
   const input = document.createElement("input");
   input.type = "file";
-  // input.accept = ".zip";
-  // input.multiple = true;
   input.click();
   const files = [];
-  input.onchange = function () {
+  input.onchange = async function () {
+    console.time("切片时间");
     for (let item of input.files) {
       files.push(item);
     }
-    sliceFile(files[0]);
+    const fileBolb = await sliceFile(files[0]);
+    console.log(fileBolb);
+    console.timeEnd("切片时间");
   };
 }
 </script>

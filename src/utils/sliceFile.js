@@ -1,31 +1,40 @@
 import SparkMD5 from "spark-md5";
-const spark = new SparkMD5.ArrayBuffer();
 
 // 主线程发送消息过来
-self.onmessage = function (e) {
-  console.log(e.data);
-  self.postMessage("向主线程发送消息");
-};
+addEventListener("message", async (e) => {
+  const { file, size, start, end, sliceFileTotal } = e.data;
+  const promiseAll = [];
+  let startSize = 0;
+  let endSize = 0;
+  for (let index = start; index < end; index++) {
+    startSize = index * size;
+    const endSizeNext = startSize + size;
+    endSize = endSizeNext >= file.size ? file.size : endSizeNext;
+    promiseAll.push(promiseFileSlice(file, startSize, endSize, sliceFileTotal, index, size));
+  }
+  Promise.all(promiseAll).then(self.postMessage);
+});
 
-function fn() {
-  let start = 0;
-  let end = 0;
-  for (let i = 0; i < sliceFileTotal; i++) {
-    start = i * size;
-    end = (i + 1) * size >= file.size ? file.size : (i + 1) * size;
+function promiseFileSlice(file, start, end, total, i, fragmentationSize) {
+  return new Promise((reslove) => {
+    const spark = new SparkMD5.ArrayBuffer();
     const fileReader = new FileReader();
     const blob = file.slice(start, end, file.type);
     fileReader.onload = (e) => {
       spark.append(e.target.result);
-      fileList.push({
+      reslove({
         blob,
-        start,
-        end,
-        index: i,
-        hash: spark.end()
+        startByte: start,
+        endByte: end,
+        fragmentationTotal: total,
+        fragmentationIndex: i,
+        fragmentationSize,
+        hash: spark.end(),
+        lastModified: file.lastModified,
+        name: file.name,
+        totalSize: file.size
       });
-      if (i + 1 >= sliceFileTotal) console.log(fileList);
     };
     fileReader.readAsArrayBuffer(blob);
-  }
+  });
 }
