@@ -1,18 +1,7 @@
 <template>
   <div>
     <el-card class="box-card">
-      <MyTabel
-        :data="tableData"
-        ref="MyTabels"
-        border
-        :default-sort="{ prop: 'date', order: 'descending' }"
-        :columns="tabelHeaders"
-      >
-        <template #empty>
-          <div>这里是空的ya</div>
-        </template>
-      </MyTabel>
-
+      <MyTabel :data="tableData" ref="MyTabels" border :columns="tabelHeaders"> </MyTabel>
       <el-button @click="clearSelection">clearSelection</el-button>
     </el-card>
   </div>
@@ -57,11 +46,9 @@ const tabelHeaders = [
 
 const MyTabels = ref(null);
 function clearSelection() {
-  MyTabels.value.clearSelection();
+  console.log(MyTabels.value.elTable.clearSelection());
 }
-onMounted(() => {
-  console.log(MyTabels.value);
-});
+onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>
