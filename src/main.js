@@ -22,3 +22,9 @@ function createApp() {
 }
 
 createApp();
+
+// window.addEventListener("copy", (e) => {
+//   e.preventDefault();
+//   console.log(e.clipboardData);
+//   // e.clipboardData.setData('')
+// });

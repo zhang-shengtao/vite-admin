@@ -5,7 +5,6 @@ body,
   margin: 0;
   width: 100%;
   height: 100%;
-
 }
 
 html.normal{
@@ -31,6 +30,6 @@ a {
   align-items: center;
 }
 
-.el-table .el-table__cell{
-  z-index: inherit !important;
-}
+// .el-table .el-table__cell{
+//   z-index: unset !important;
+// }
