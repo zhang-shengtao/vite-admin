@@ -18,7 +18,7 @@ export default defineStore("user", () => {
     KeepAlive: [], // 要缓存的页面
     searchPage: [] // 要搜索的页面一维数组
   });
-  const layoutData = reactive(layout);
+  const layoutData = reactive({ ...layout });
 
   // 处理要显示在菜单栏中的列表
   function menuArr(allArr, path = "") {
@@ -88,6 +88,7 @@ export default defineStore("user", () => {
       data.isPc = true;
     }
     if (document.body.clientWidth == data.winWidth) return;
+
     if (document.body.clientWidth > 750 && document.body.clientWidth < 1200) {
       layoutData.layoutType = "top";
     }

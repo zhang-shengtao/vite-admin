@@ -1,21 +1,34 @@
 <template>
-  <el-table :data="tableData" border show-summary :span-method="arraySpanMethod" style="width: 100%; margin-top: 20px">
-    <el-table-column type="expand" label="测试">
-      <template #default="{ row, $index }"> 自定义展开行{{ row.amount1 }} </template>
-    </el-table-column>
-    <el-table-column prop="id" label="ID" width="180" />
-    <el-table-column prop="name" label="Name" />
-    <el-table-column prop="amount1" label="amount1" sortable>
-      <template #default="{ row }">
-        {{ row.amount1 }}
-      </template>
-    </el-table-column>
-    <el-table-column prop="amount2" label="amount2" sortable>
-      <template #expand="{ row, $index }"> {{ row.amount2 }}->{{ $index }} </template>
-    </el-table-column>
+  <el-card class="box-card" v-rightmens:[menu].abc="contextmenu">
+    <el-table
+      :data="tableData"
+      border
+      show-summary
+      :span-method="arraySpanMethod"
+      style="width: 100%; margin-top: 20px"
+    >
+      <el-table-column type="expand" label="测试">
+        <template #default="{ row, $index }"> 自定义展开行{{ row.amount1 }} </template>
+      </el-table-column>
+      <el-table-column prop="id" label="ID" width="180" />
+      <el-table-column prop="name" label="Name" />
+      <el-table-column prop="amount1" label="amount1" sortable>
+        <template #default="{ row }">
+          {{ row.amount1 }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="amount2" label="amount2" sortable>
+        <template #expand="{ row, $index }"> {{ row.amount2 }}->{{ $index }} </template>
+      </el-table-column>
 
-    <el-table-column label="amount3" :formatter="formatter"> </el-table-column>
-  </el-table>
+      <el-table-column label="amount3" :formatter="formatter"> </el-table-column>
+    </el-table>
+    <!-- <div class="contextmenu" v-if="menu" :style="menuStyle">
+      <div class="li">测试1</div>
+      <div class="li">测试2</div>
+      <div class="li">测试3</div>
+    </div> -->
+  </el-card>
 </template>
 
 <script setup>
@@ -119,4 +132,24 @@ const tableData = [
     }
   }
 ];
+
+const menu = [
+  {
+    label: "测试1",
+    value: 1
+  },
+  {
+    label: "测试2",
+    value: 2
+  },
+  {
+    label: "测试3",
+    value: 3
+  }
+];
+function contextmenu(param) {
+  console.log(param);
+}
 </script>
+
+<style scoped lang="scss"></style>

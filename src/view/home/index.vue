@@ -1,15 +1,7 @@
 <template>
   <div>
     <el-card class="box-card">
-      <MyTabel
-        stripe
-        border
-        show-summary
-        :span-method="arraySpanMethod"
-        :data="tableData"
-        ref="MyTabels"
-        :columns="tabelHeaders"
-      >
+      <MyTabel stripe border show-summary :data="tableData" ref="MyTabels" :columns="tabelHeaders">
         <template #input="{ column, $index }">
           <!-- <el-input v-model="text" placeholder="请输入zip"></el-input> -->
           <component is="el-input" :="obj" />
@@ -27,6 +19,10 @@
         </template>
         <template #expand="{ row, column, $index }">
           <div>展开行内容{{ row.state }}</div>
+        </template>
+
+        <template #empty>
+          <div>空的数据</div>
         </template>
       </MyTabel>
       <el-button style="margin-top: 10px" @click="clearSelection">clearSelection</el-button>
@@ -81,15 +77,15 @@ watch(text, (val) => {
   console.log(val);
 });
 
-const arraySpanMethod = ({ row, column, rowIndex, columnIndex }) => {
-  if (rowIndex % 2 === 0) {
-    if (columnIndex === 0) {
-      return [1, 2];
-    } else if (columnIndex === 1) {
-      return [0, 0];
-    }
-  }
-};
+// const arraySpanMethod = ({ row, column, rowIndex, columnIndex }) => {
+//   if (rowIndex % 2 === 0) {
+//     if (columnIndex === 0) {
+//       return [1, 2];
+//     } else if (columnIndex === 1) {
+//       return [0, 0];
+//     }
+//   }
+// };
 
 const obj = {
   placeholder: "请输入",

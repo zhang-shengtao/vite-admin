@@ -1,14 +1,10 @@
 <template>
-  <el-table-column :="tableColumnProp($attrs)" :align="align" :prop="prop">
+  <el-table-column :="tableColumnProp($attrs)" :align="align">
     <template v-if="typeOf(children) === 'array' && children.length">
       <table-column v-for="(item, i) in children" :key="i" :="item" :slots="slots" />
     </template>
     <template
-      v-if="
-        typeOf(children) === 'undefined' &&
-        isShowDefaultSlot(slot, $attrs.type || $attrs.label) &&
-        !['append', 'empty'].includes(slot)
-      "
+      v-if="typeOf(children) === 'undefined' && isShowDefaultSlot(slot, $attrs.type || $attrs.label)"
       #default="{ row, column, $index }"
     >
       <component v-if="!!slot" :is="slots[slot]" :="{ row, column, $index }" />
@@ -22,7 +18,7 @@
 
 <script setup>
 import { typeOf } from "@/utils/method.js";
-defineProps({
+const props = defineProps({
   children: {
     type: Array
   },
@@ -36,7 +32,7 @@ defineProps({
   },
   prop: {
     type: [String, Function],
-    default: () => ""
+    default: ""
   },
   formatter: {
     type: Function
@@ -52,7 +48,9 @@ defineProps({
 });
 
 function tableColumnProp(attrs) {
-  return attrs;
+  const obj = { ...attrs };
+  if (typeOf(props.prop) === "string") obj.prop = props.prop;
+  return obj;
 }
 
 function rowKey(key, row, column, $index, formatter) {

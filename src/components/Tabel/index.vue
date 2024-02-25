@@ -1,8 +1,8 @@
 <template>
   <el-table :="$attrs" ref="elTableRef">
-    <table-column v-for="(item, i) in columns" :key="i" :="item" :slots="$slots" />
-    <template v-for="item in tableSlot($slots)" #[item]="scope">
-      <slot :name="item" :="{ ...scope }" />
+    <table-column v-for="(item, i) in columns" :key="i" :="item" :slots="tableSlot($slots, false)" />
+    <template v-for="(val, key) in tableSlot($slots)" #[key]="scope">
+      <component :is="val" :="scope" />
     </template>
   </el-table>
 </template>
@@ -17,11 +17,17 @@ const props = defineProps({
   }
 });
 
-function tableSlot(s) {
-  let arr = [];
-  if (s.append) arr.push("append");
-  if (s.empty) arr.push("empty");
-  return arr;
+function tableSlot(s, isTabel = true) {
+  let obj = {};
+  if (isTabel) {
+    if (s.append) obj.append = s.append;
+    if (s.empty) obj.empty = s.empty;
+  } else {
+    for (let key in s) {
+      if (!["append", "empty"].includes(key)) obj[key] = s[key];
+    }
+  }
+  return obj;
 }
 
 const elTableRef = ref();
