@@ -1,28 +1,34 @@
 <template>
-  <el-table-column :="$attrs" :align="align">
-    <template v-if="children && children.length">
+  <el-table-column :="tableColumnProp($attrs)" :align="align" :prop="prop">
+    <template v-if="typeOf(children) === 'array' && children.length">
       <table-column v-for="(item, i) in children" :key="i" :="item" :slots="slots" />
     </template>
-    <template v-if="!children && isShowDefaultSlot(slot, $attrs.type || undefined)" #default="{ row, column, $index }">
-      <component v-if="slot" :is="slots[slot]" :="{ row, column, $index }" />
-      <span v-else>{{ row[prop] }} -> {{ $index }}</span>
+    <template
+      v-if="
+        typeOf(children) === 'undefined' &&
+        isShowDefaultSlot(slot, $attrs.type || $attrs.label) &&
+        !['append', 'empty'].includes(slot)
+      "
+      #default="{ row, column, $index }"
+    >
+      <component v-if="!!slot" :is="slots[slot]" :="{ row, column, $index }" />
+      <template v-else>{{ rowKey(prop, row, column, $index, formatter) }}</template>
     </template>
-    <template v-if="headerSlot(header)" #header="scope">
-      <component :is="slots[header]" :="{ ...scope }" v-if="typeOf(header) === 'string'" />
-      <component :is="header.com" :="{ ...header }" v-else />
+    <template v-if="!!header" #header="scope">
+      <component :is="slots[header]" :="scope" />
     </template>
   </el-table-column>
 </template>
 
 <script setup>
 import { typeOf } from "@/utils/method.js";
-const props = defineProps({
+defineProps({
   children: {
     type: Array
   },
   header: {
-    type: [String, Object],
-    default: {}
+    type: [String],
+    default: ""
   },
   slots: {
     type: Object,
@@ -31,6 +37,9 @@ const props = defineProps({
   prop: {
     type: [String, Function],
     default: () => ""
+  },
+  formatter: {
+    type: Function
   },
   slot: {
     type: String,
@@ -42,16 +51,30 @@ const props = defineProps({
   }
 });
 
-function headerSlot(arg) {
-  let bol = false;
-  bol = (typeof arg === "string" && !!arg) || (typeOf(arg) === "object" && JSON.stringify(arg) != "{}");
-  return bol;
+function tableColumnProp(attrs) {
+  return attrs;
+}
+
+function rowKey(key, row, column, $index, formatter) {
+  if (typeOf(formatter) === "function") return formatter({ row, column, $index });
+  if (typeOf(key) === "function") return key({ row, column, $index });
+  const keys = key.split(".");
+  let value = "";
+  keys.forEach((item) => {
+    if (item.endsWith("]")) {
+      const arr = item.split("[");
+      const i = arr[1].split("]")[0];
+      value = value ? value[arr[0]][i] : row[arr[0]][i];
+    } else {
+      value = value ? value[item] : row[item];
+    }
+  });
+  return value;
 }
 
 function isShowDefaultSlot(slotName, type) {
-  let edit = ["编辑", "操作"];
   let bol = true;
-  bol = !(["selection", "index"].includes(type) && !slotName);
+  bol = !(["selection", "index", "expand", "编辑", "操作"].includes(type) && !slotName);
   return bol;
 }
 </script>

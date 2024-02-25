@@ -1,27 +1,25 @@
 <template>
-  <div>
-    <!-- <el-button type="primary" @click="fileUpload">上传文件</el-button> -->
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="Date" width="180" />
-      <el-table-column prop="name" label="Name" width="180" />
-      <el-table-column label="Address">
-        <template #default>
-          <el-image
-            preview-teleported
-            style="width: 100px; height: 100px"
-            :preview-src-list="[url]"
-            :src="url"
-          ></el-image>
-        </template>
-      </el-table-column>
-    </el-table>
-  </div>
+  <el-table :data="tableData" border show-summary :span-method="arraySpanMethod" style="width: 100%; margin-top: 20px">
+    <el-table-column type="expand" label="测试">
+      <template #default="{ row, $index }"> 自定义展开行{{ row.amount1 }} </template>
+    </el-table-column>
+    <el-table-column prop="id" label="ID" width="180" />
+    <el-table-column prop="name" label="Name" />
+    <el-table-column prop="amount1" label="amount1" sortable>
+      <template #default="{ row }">
+        {{ row.amount1 }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="amount2" label="amount2" sortable>
+      <template #expand="{ row, $index }"> {{ row.amount2 }}->{{ $index }} </template>
+    </el-table-column>
+
+    <el-table-column label="amount3" :formatter="formatter"> </el-table-column>
+  </el-table>
 </template>
 
 <script setup>
 import { sliceFile } from "@/utils/method.js";
-const url = "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg";
-
 function fileUpload() {
   const input = document.createElement("input");
   input.type = "file";
@@ -38,28 +36,87 @@ function fileUpload() {
   };
 }
 
+function formatter(row, column, cellValue, index) {
+  return row.amount3.a + "自定义的";
+}
+const arraySpanMethod = ({ row, column, rowIndex, columnIndex }) => {
+  if (rowIndex % 2 === 0) {
+    if (columnIndex === 0) {
+      return [1, 2];
+    } else if (columnIndex === 1) {
+      return [0, 0];
+    }
+  }
+};
+function getSummaries(param) {
+  const { columns, data } = param;
+  const sums = [];
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      sums[index] = "Total Cost";
+      return;
+    }
+    const values = data.map((item) => Number(item[column.property]));
+    if (!values.every((value) => Number.isNaN(value))) {
+      sums[index] = `$ ${values.reduce((prev, curr) => {
+        const value = Number(curr);
+        if (!Number.isNaN(value)) {
+          return prev + curr;
+        } else {
+          return prev;
+        }
+      }, 0)}`;
+    } else {
+      sums[index] = "N/A";
+    }
+  });
+  return sums;
+}
 const tableData = [
   {
-    date: "2016-05-03",
+    id: "12987122",
     name: "Tom",
-    address: "No. 189, Grove St, Los Angeles"
+    amount1: "234",
+    amount2: "3.2",
+    amount3: {
+      a: 11
+    }
   },
   {
-    date: "2016-05-02",
+    id: "12987123",
     name: "Tom",
-    address: "No. 189, Grove St, Los Angeles"
+    amount1: "165",
+    amount2: "4.43",
+    amount3: {
+      a: 9
+    }
   },
   {
-    date: "2016-05-04",
+    id: "12987124",
     name: "Tom",
-    address: "No. 189, Grove St, Los Angeles"
+    amount1: "324",
+    amount2: "1.9",
+    amount3: {
+      a: 10
+    }
   },
   {
-    date: "2016-05-01",
+    id: "12987125",
     name: "Tom",
-    address: "No. 189, Grove St, Los Angeles"
+    amount1: "621",
+    amount2: "2.2",
+    amount3: {
+      a: 17
+    }
+  },
+  {
+    id: "12987126",
+    name: "Tom",
+    amount1: "539",
+    amount2: "4.1",
+    amount3: {
+      a: 15
+    }
   }
 ];
 </script>
-
-<style scoped lang="scss"></style>
