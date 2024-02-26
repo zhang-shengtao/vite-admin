@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { debounce } from "lodash-es";
 import layout from "#/setting/layout";
 import config from "#/setting/config";
 import storageKey from "#/setting/storageKey";
+import { winWH } from "@/utils/winEven.js";
 import { allRouter } from "@/router";
 import { setStorage } from "@/utils/storage";
 
@@ -36,9 +36,10 @@ export default defineStore("user", () => {
             arr.push(...children);
           }
         } else {
-          if (!item.path.startsWith("/") && !item.path.startsWith("http") && path)
+          if (!item.path.startsWith("/") && !item.path.startsWith("http") && path) {
             item.path = (path == "/" ? "" : path) + `/${item.path}`;
-          arr.push(item);
+            arr.push(item);
+          }
         }
       }
       if (item.name && item.meta.KeepAlive && !data.KeepAlive.includes(item.name)) {
@@ -77,27 +78,27 @@ export default defineStore("user", () => {
     },
     { immediate: true }
   );
+  watch(
+    winWH,
+    (val) => {
+      data.isPc = isPc();
+      if (!isPc()) data.isCollapse = false;
+      if (val.vw <= 750) {
+        data.isPc = false;
+      } else {
+        data.isPc = true;
+      }
+      if (val.vw == data.winWidth) return;
+      if (val.vw > 750 && val.vw < 1200) {
+        layoutData.layoutType = "top";
+      }
+      if (val.vw >= 1200) {
+        layoutData.layoutType = layoutType;
+      }
+      data.winWidth = val.vw;
+    },
+    { immediate: true }
+  );
 
-  // 监听窗口的变化
-  function onResize() {
-    data.isPc = isPc();
-    if (!isPc()) data.isCollapse = false;
-    if (document.body.clientWidth <= 750) {
-      data.isPc = false;
-    } else {
-      data.isPc = true;
-    }
-    if (document.body.clientWidth == data.winWidth) return;
-
-    if (document.body.clientWidth > 750 && document.body.clientWidth < 1200) {
-      layoutData.layoutType = "top";
-    }
-    if (document.body.clientWidth >= 1200) {
-      layoutData.layoutType = layoutType;
-    }
-    data.winWidth = document.body.clientWidth;
-  }
-  const resize = debounce(onResize, 100);
-  window.addEventListener("resize", resize);
   return { ...toRefs(layoutData), ...toRefs(data) };
 });

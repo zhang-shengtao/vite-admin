@@ -1,5 +1,5 @@
 <template>
-  <el-table-column :="tableColumnProp($attrs)" :align="align">
+  <el-table-column :="tableColumnProp($attrs)">
     <template v-if="typeOf(children) === 'array' && children.length">
       <table-column v-for="(item, i) in children" :key="i" :="item" :slots="slots" />
     </template>
@@ -18,6 +18,7 @@
 
 <script setup>
 import { typeOf } from "@/utils/method.js";
+import { watch } from "vue";
 const props = defineProps({
   children: {
     type: Array
@@ -50,6 +51,7 @@ const props = defineProps({
 function tableColumnProp(attrs) {
   const obj = { ...attrs };
   if (typeOf(props.prop) === "string") obj.prop = props.prop;
+  obj.align = props.align;
   return obj;
 }
 

@@ -1,12 +1,6 @@
 <template>
   <el-card class="box-card" v-rightmens:[menu].abc="contextmenu">
-    <el-table
-      :data="tableData"
-      border
-      show-summary
-      :span-method="arraySpanMethod"
-      style="width: 100%; margin-top: 20px"
-    >
+    <el-table :data="tableData" border show-summary style="width: 100%; margin-top: 20px">
       <el-table-column type="expand" label="测试">
         <template #default="{ row, $index }"> 自定义展开行{{ row.amount1 }} </template>
       </el-table-column>
@@ -20,19 +14,19 @@
       <el-table-column prop="amount2" label="amount2" sortable>
         <template #expand="{ row, $index }"> {{ row.amount2 }}->{{ $index }} </template>
       </el-table-column>
-
-      <el-table-column label="amount3" :formatter="formatter"> </el-table-column>
     </el-table>
-    <!-- <div class="contextmenu" v-if="menu" :style="menuStyle">
+    <div class="contextmenu">
       <div class="li">测试1</div>
       <div class="li">测试2</div>
       <div class="li">测试3</div>
-    </div> -->
+    </div>
+    <el-button @click="menu[2].value = 4">指令传参更新</el-button>
   </el-card>
 </template>
 
 <script setup>
 import { sliceFile } from "@/utils/method.js";
+import { watch } from "vue";
 function fileUpload() {
   const input = document.createElement("input");
   input.type = "file";
@@ -133,7 +127,7 @@ const tableData = [
   }
 ];
 
-const menu = [
+const menu = reactive([
   {
     label: "测试1",
     value: 1
@@ -146,10 +140,18 @@ const menu = [
     label: "测试3",
     value: 3
   }
-];
+]);
+
+watch;
 function contextmenu(param) {
   console.log(param);
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.contextmenu {
+  background-color: aliceblue;
+  min-width: 100px;
+  max-width: 280px;
+}
+</style>
