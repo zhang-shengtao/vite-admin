@@ -6,6 +6,7 @@
 
 <script setup>
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
+// console.log($msgbox);
 </script>
 
 <style lang="scss">

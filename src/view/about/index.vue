@@ -142,7 +142,7 @@ const menu = reactive([
   }
 ]);
 
-const menus = reactive([
+const menus = [
   {
     label: "测试4",
     value: 4
@@ -155,7 +155,7 @@ const menus = reactive([
     label: "测试6",
     value: 6
   }
-]);
+];
 
 function contextmenu(param) {
   console.log(param);
