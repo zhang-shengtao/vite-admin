@@ -4,9 +4,10 @@ import config from "#/setting/config";
 import storageKey from "#/setting/storageKey";
 import { winWH } from "@/utils/winEven.js";
 import { allRouter } from "@/router";
-import { setStorage } from "@/utils/storage";
+import { setStorage, getStorage } from "@/utils/storage";
 
 const layoutType = layout.layoutType;
+if (!getStorage(storageKey.layoutType)) setStorage(storageKey.layoutType, layoutType);
 let isPc = () => !/Mobi|Android|iPhone/i.test(navigator.userAgent);
 
 export default defineStore("user", () => {
@@ -69,33 +70,29 @@ export default defineStore("user", () => {
   }
 
   watch(
-    layoutData,
-    (val) => {
-      document.documentElement.className = val.theme;
-      setStorage(storageKey.theme, val.theme);
-      setStorage(storageKey.layoutType, val.layoutType);
-      setStorage(storageKey.isTag, val.isTag);
-    },
-    { immediate: true }
-  );
-  watch(
-    winWH,
-    (val) => {
+    [layoutData, winWH],
+    (newVal, val) => {
+      const [layoutDatas, winWHs] = newVal;
+      document.documentElement.className = layoutDatas.theme;
+      setStorage(storageKey.theme, layoutDatas.theme);
+      setStorage(storageKey.isTag, layoutDatas.isTag);
+      if (layoutDatas.layoutType === val[1]?.layoutType) {
+        setStorage(storageKey.layoutType, layoutDatas.layoutType);
+      }
       data.isPc = isPc();
       if (!isPc()) data.isCollapse = false;
-      if (val.vw <= 750) {
+      if (winWHs.vw <= 750) {
         data.isPc = false;
       } else {
         data.isPc = true;
       }
-      if (val.vw == data.winWidth) return;
-      if (val.vw > 750 && val.vw < 1200) {
+      if (winWHs.vw > 750 && winWHs.vw < 1200) {
         layoutData.layoutType = "top";
       }
-      if (val.vw >= 1200) {
+      if (winWHs.vw >= 1200) {
         layoutData.layoutType = layoutType;
       }
-      data.winWidth = val.vw;
+      data.winWidth = winWHs.vw;
     },
     { immediate: true }
   );

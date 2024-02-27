@@ -20,7 +20,6 @@
         <template #expand="{ row, column, $index }">
           <div>展开行内容{{ row.state }}</div>
         </template>
-
         <template #empty>
           <div>空的数据</div>
         </template>

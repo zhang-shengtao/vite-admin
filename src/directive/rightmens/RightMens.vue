@@ -15,13 +15,6 @@ const props = defineProps({
     default: () => {}
   }
 });
-
-/***
- *x,y =>鼠标位置  vw,vh =>视口的大小 w,h =>要显示菜单的宽高
- * if(x.val>vw.val-w.val) return x.val-w.val
- * if(y.val>vh.val-h.val) return vh.val-h.val
- *
- */
 </script>
 
 <style lang="scss" scope>

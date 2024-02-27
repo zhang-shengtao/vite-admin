@@ -1,21 +1,21 @@
 <template>
   <el-card class="box-card">
-    <!-- <el-table :data="tableData" border show-summary style="width: 100%; margin-top: 20px">
-      <el-table-column type="expand" label="测试">
-        <template #default="{ row, $index }"> 自定义展开行{{ row.amount1 }} </template>
-      </el-table-column>
-      <el-table-column prop="id" label="ID" width="180" />
-      <el-table-column prop="name" label="Name" />
-      <el-table-column prop="amount1" label="amount1" sortable>
-        <template #default="{ row }">
-          {{ row.amount1 }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="amount2" label="amount2" sortable>
-        <template #expand="{ row, $index }"> {{ row.amount2 }}->{{ $index }} </template>
-      </el-table-column>
-    </el-table> -->
     <el-card class="box-card" v-rightmens:[menu]="contextmenu">
+      <el-table :data="tableData" border show-summary style="width: 100%; margin-top: 20px">
+        <el-table-column type="expand" label="测试">
+          <template #default="{ row, $index }"> 自定义展开行{{ row.amount1 }} </template>
+        </el-table-column>
+        <el-table-column prop="id" label="ID" width="180" />
+        <el-table-column prop="name" label="Name" />
+        <el-table-column prop="amount1" label="amount1" sortable>
+          <template #default="{ row }">
+            {{ row.amount1 }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="amount2" label="amount2" sortable>
+          <template #expand="{ row, $index }"> {{ row.amount2 }}->{{ $index }} </template>
+        </el-table-column>
+      </el-table>
       <el-button @click="menu[2].value = 4">指令传参更新</el-button>
     </el-card>
     <el-card class="box-card" style="margin-top: 10px" v-rightmens:[menus]="contextmenu">

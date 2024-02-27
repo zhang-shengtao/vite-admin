@@ -2,6 +2,7 @@ import RightMens from "./RightMens.vue";
 import { winWH } from "@/utils/winEven.js";
 
 let div = null;
+let unwatch = null;
 const DOM = reactive({
   w: 0,
   h: 0
@@ -11,7 +12,6 @@ const ob = new ResizeObserver((enties) => {
   DOM.w = inlineSize;
   DOM.h = blockSize;
 });
-let unwatch = null;
 // v-rightclickmens:[data]=fn @contextmenu="contextmenu"
 export const rightmens = {
   position(e, binding) {
