@@ -1,6 +1,6 @@
 <template>
-  <el-card class="box-card" v-rightmens:[menu].abc="contextmenu">
-    <el-table :data="tableData" border show-summary style="width: 100%; margin-top: 20px">
+  <el-card class="box-card">
+    <!-- <el-table :data="tableData" border show-summary style="width: 100%; margin-top: 20px">
       <el-table-column type="expand" label="测试">
         <template #default="{ row, $index }"> 自定义展开行{{ row.amount1 }} </template>
       </el-table-column>
@@ -14,13 +14,13 @@
       <el-table-column prop="amount2" label="amount2" sortable>
         <template #expand="{ row, $index }"> {{ row.amount2 }}->{{ $index }} </template>
       </el-table-column>
-    </el-table>
-    <div class="contextmenu">
-      <div class="li">测试1</div>
-      <div class="li">测试2</div>
-      <div class="li">测试3</div>
-    </div>
-    <el-button @click="menu[2].value = 4">指令传参更新</el-button>
+    </el-table> -->
+    <el-card class="box-card" v-rightmens:[menu]="contextmenu">
+      <el-button @click="menu[2].value = 4">指令传参更新</el-button>
+    </el-card>
+    <el-card class="box-card" style="margin-top: 10px" v-rightmens:[menus]="contextmenu">
+      <el-button @click="menus[2].value = 4">指令传参更新s</el-button>
+    </el-card>
   </el-card>
 </template>
 
@@ -142,7 +142,21 @@ const menu = reactive([
   }
 ]);
 
-watch;
+const menus = reactive([
+  {
+    label: "测试4",
+    value: 4
+  },
+  {
+    label: "测试5",
+    value: 5
+  },
+  {
+    label: "测试6",
+    value: 6
+  }
+]);
+
 function contextmenu(param) {
   console.log(param);
 }

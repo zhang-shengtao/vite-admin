@@ -34,7 +34,7 @@ defineProps(["style"]);
 
 .Menus {
   left: 0;
-  z-index: 2;
+  z-index: 10;
   transition: all 0.5s;
   background-color: var(--el-menu-bg-color);
   --el-bg-color-overlay: #035165;

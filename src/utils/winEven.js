@@ -1,5 +1,5 @@
 import { debounce } from "lodash-es";
-
+import { clearDiv } from "@/directive/rightmens/index.js";
 export const Mymap = new WeakMap();
 
 export const winWH = reactive({
@@ -14,7 +14,7 @@ function onResize() {
 }
 
 function onMousedown(e) {
-  //   console.log(e);
+  clearDiv(e);
 }
 window.onresize = debounce(onResize, 300);
 window.onmousedown = debounce(onMousedown, 100);

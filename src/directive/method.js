@@ -1,6 +1,5 @@
 import { typeOf, IsPC, file } from "@/utils/method";
-import RightMens from "./componentes/RightMens.vue";
-import { winWH } from "@/utils/winEven.js";
+
 // v-file:[order1].xls.multiple="testV"
 export function files(el, binding) {
   if (typeOf(binding.value) !== "function") {
@@ -188,69 +187,3 @@ export function isScroll(el, binding, vnode, prevNode) {
     }, 20);
   }
 }
-
-let div;
-// v-rightclickmens:[data]=fn @contextmenu="contextmenu"
-export const rightmens = {
-  // 在绑定元素的 attribute 前或事件监听器应用前调用
-  created(el, binding, vnode, prevVnode) {},
-  // 在元素被插入到 DOM 前调用
-  beforeMount(el, binding, vnode, prevVnode) {
-    if (!Array.isArray(binding.arg)) return console.error(new Error("请绑定菜单数据"));
-
-    const DOM = reactive({
-      w: 0,
-      h: 0
-    });
-    const ob = new ResizeObserver((enties) => {
-      const { blockSize, inlineSize } = enties[0].borderBoxSize[0];
-      DOM.w = inlineSize;
-      DOM.h = blockSize;
-      console.log("1", blockSize, inlineSize);
-    });
-    if (div) ob.observe(div);
-
-    el.oncontextmenu = (e) => {
-      e.preventDefault();
-      if (div) {
-        div.remove();
-        div = null;
-      }
-      div = document.createElement("div");
-      div.className = "rightmens";
-      const { clientX, clientY } = e;
-      const app = createApp(RightMens, { menu: binding.arg });
-      watch(
-        computed(() => {
-          let top = clientY;
-          let left = clientX;
-          if (clientX > winWH.vw - DOM.w) left = clientX - DOM.w;
-          if (clientY > winWH.vh - DOM.h) top = winWH.vh - DOM.h;
-          return {
-            top: top + "px",
-            left: left + "px"
-          };
-        }),
-        (val) => {
-          div.style.top = val.top;
-          div.style.left = val.left;
-          console.log("4", val);
-        }
-      );
-      app.mount(div);
-      ob.observe(div);
-      console.log("3", div);
-      document.body.append(div);
-    };
-  },
-  // 在绑定元素的父组件及他自己的所有子节点都挂载完成后调用
-  mounted(el, binding, vnode, prevVnode) {},
-  // 绑定元素的父组件更新前调用
-  beforeUpdate(el, binding, vnode, prevVnode) {},
-  // 在绑定元素的父组件及他自己的所有子节点都更新后调用
-  updated(el, binding, vnode, prevVnode) {},
-  // 绑定元素的父组件卸载前调用
-  beforeUnmount(el, binding, vnode, prevVnode) {},
-  // 绑定元素的父组件卸载后调用
-  unmounted(el, binding, vnode, prevVnode) {}
-};
