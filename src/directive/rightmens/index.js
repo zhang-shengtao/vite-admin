@@ -61,11 +61,15 @@ export const rightmens = {
   unmounted(el, binding, vnode, prevVnode) {}
 };
 
+let time;
 export function clearDiv(e) {
   if (e?.button == 2) return;
-  ob.disconnect();
-  div && div.remove();
-  div = null;
-  unwatch && unwatch();
-  unwatch = null;
+  time && clearTimeout(time);
+  time = setTimeout(() => {
+    ob.disconnect();
+    div && div.remove();
+    div = null;
+    unwatch && unwatch();
+    unwatch = null;
+  }, 10);
 }
