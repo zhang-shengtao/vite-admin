@@ -27,7 +27,7 @@ const isTopHeader = computed(() => {
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 9;
   background-color: #141414db;
 }
 </style>

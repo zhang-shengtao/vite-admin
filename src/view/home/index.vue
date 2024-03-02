@@ -97,83 +97,12 @@ function getSummaries({ columns, data }) {
   return ["合计", 2, 3, 4, 5, 6, 7, 8, "操作"];
 }
 
-// const tabelHeaders = [
-//   {
-//     type: "selection",
-//     width: "120",
-//     fixed: true
-//   },
-//   {
-//     label: "时间",
-//     prop: "date",
-//     sortable: true,
-//     width: "300"
-//   },
-//   {
-//     label: "整体",
-//     align: "left",
-//     children: [
-//       {
-//         label: "姓名",
-//         prop: "name",
-//         width: "300"
-//       },
-//       {
-//         label: "地址信息",
-//         children: [
-//           {
-//             label: "年龄",
-//             prop: ({ row }) => row.age,
-//             width: "300",
-//             "column-key": "age",
-//             filters: [
-//               { text: "11岁", value: 11 },
-//               { text: "12岁", value: 12 },
-//               { text: "13岁", value: 13 }
-//             ],
-//             "filter-method": (value, row) => row.age === value
-//           },
-//           {
-//             label: "地址",
-//             prop: "address",
-//             width: "300"
-//           },
-//           {
-//             label: "state1111",
-//             prop: "state",
-//             width: "300"
-//           },
-//           {
-//             label: "图片",
-//             prop: "url",
-//             width: "300",
-//             slot: "image"
-//           },
-//           {
-//             label: "zpiyayya",
-//             prop: "zip",
-//             width: "300",
-//             header: "input"
-//           }
-//         ]
-//       }
-//     ]
-//   },
-//   {
-//     label: "编辑",
-//     fixed: "right",
-//     slot: "edit",
-//     width: "100"
-//   }
-// ];
-
 const tabelHeaders = [
-  // {
-  //   type: "selection",
-  //   width: "120",
-  //   fixed: true
-  // },
-
+  {
+    type: "selection",
+    width: "120",
+    fixed: true
+  },
   {
     label: "时间",
     prop: "date",
@@ -181,58 +110,129 @@ const tabelHeaders = [
     width: "300"
   },
   {
-    label: "姓名",
-    prop: "name",
-    width: "300"
-  },
-  {
-    label: "state1111",
-    prop: "state",
-    width: "300",
-    sortable: true
-  },
-  {
-    label: "年龄",
-    prop: "age",
-    width: "300",
-    "column-key": "age",
-    filters: [
-      { text: "11岁", value: 11 },
-      { text: "12岁", value: 12 },
-      { text: "13岁", value: 13 }
-    ],
-    "filter-method": (value, row) => row.age === value
-  },
-  {
-    label: "地址",
-    prop: "address",
-    width: "300"
-  },
-
-  {
-    label: "zpiyayya",
-    prop: "zip",
-    header: "input",
-    width: "300"
-  },
-  {
-    label: "图片",
-    prop: "url",
-    width: "300",
-    slot: "image"
+    label: "整体",
+    align: "left",
+    children: [
+      {
+        label: "姓名",
+        prop: "name",
+        width: "300"
+      },
+      {
+        label: "地址信息",
+        children: [
+          {
+            label: "年龄",
+            prop: ({ row }) => row.age,
+            width: "300",
+            "column-key": "age",
+            filters: [
+              { text: "11岁", value: 11 },
+              { text: "12岁", value: 12 },
+              { text: "13岁", value: 13 }
+            ],
+            "filter-method": (value, row) => row.age === value
+          },
+          {
+            label: "地址",
+            prop: "address",
+            width: "300"
+          },
+          {
+            label: "state1111",
+            prop: "state",
+            width: "300"
+          },
+          {
+            label: "图片",
+            prop: "url",
+            width: "300",
+            slot: "image"
+          },
+          {
+            label: "zpiyayya",
+            prop: "zip",
+            width: "300",
+            header: "input"
+          }
+        ]
+      }
+    ]
   },
   {
     label: "编辑",
     fixed: "right",
     slot: "edit",
     width: "100"
-  },
-  {
-    type: "expand",
-    slot: "expand",
-    label: ">"
   }
 ];
+
+// const tabelHeaders = [
+//   // {
+//   //   type: "selection",
+//   //   width: "120",
+//   //   fixed: true
+//   // },
+
+//   {
+//     label: "时间",
+//     prop: "date",
+//     sortable: true,
+//     width: "300"
+//   },
+//   {
+//     label: "姓名",
+//     prop: "name",
+//     width: "300"
+//   },
+//   {
+//     label: "state1111",
+//     prop: "state",
+//     width: "300",
+//     sortable: true
+//   },
+//   {
+//     label: "年龄",
+//     prop: "age",
+//     width: "300",
+//     "column-key": "age",
+//     filters: [
+//       { text: "11岁", value: 11 },
+//       { text: "12岁", value: 12 },
+//       { text: "13岁", value: 13 }
+//     ],
+//     "filter-method": (value, row) => row.age === value
+//   },
+//   {
+//     label: "地址",
+//     prop: "address",
+//     width: "300"
+//   },
+
+//   {
+//     label: "zpiyayya",
+//     prop: "zip",
+//     header: "input",
+//     width: "300"
+//   },
+//   {
+//     label: "图片",
+//     prop: "url",
+//     width: "300",
+//     slot: "image"
+//   },
+//   {
+//     label: "编辑",
+//     fixed: "right",
+//     slot: "edit",
+//     width: "100"
+//   },
+//   {
+//     type: "expand",
+//     slot: "expand",
+//     label: ">"
+//   }
+// ];
 
 const MyTabels = ref(null);
 function clearSelection() {

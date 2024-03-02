@@ -16,7 +16,11 @@ const ob = new ResizeObserver((enties) => {
 export const rightmens = {
   position(e, binding) {
     const { clientX, clientY } = e;
-    const app = createApp(RightMens, { menu: binding.arg, fn: binding.value });
+    const fn = (arg) => {
+      clearDiv();
+      binding.value(arg);
+    };
+    const app = createApp(RightMens, { menu: binding.arg, fn });
     unwatch = watch(
       [winWH, DOM],
       (val) => {
@@ -55,21 +59,19 @@ export const rightmens = {
   updated(el, binding, vnode, prevVnode) {},
   // 绑定元素的父组件卸载前调用
   beforeUnmount(el, binding, vnode, prevVnode) {
-    clearDiv();
+    // clearDiv();
   },
   // 绑定元素的父组件卸载后调用
   unmounted(el, binding, vnode, prevVnode) {}
 };
 
-let time;
 export function clearDiv(e) {
   if (e?.button == 2) return;
-  time && clearTimeout(time);
-  time = setTimeout(() => {
-    ob.disconnect();
-    div && div.remove();
-    div = null;
-    unwatch && unwatch();
-    unwatch = null;
-  }, 10);
+  if (e && e.target === div) return;
+  if (!div) return;
+  ob.disconnect();
+  unwatch && unwatch();
+  unwatch = null;
+  div && div.remove();
+  div = null;
 }
