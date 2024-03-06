@@ -16,7 +16,7 @@
           <template #expand="{ row, $index }"> {{ row.amount2 }}->{{ $index }} </template>
         </el-table-column>
       </el-table>
-      <el-button @click="menu[2].value = 4">指令传参更新</el-button>
+      <el-button v-file.multiple="contextmenu">指令传参更新</el-button>
     </el-card>
     <el-card class="box-card" style="margin-top: 10px" v-rightmens:[menus]="contextmenu">
       <el-button @click="menus[2].value = 4">指令传参更新s</el-button>

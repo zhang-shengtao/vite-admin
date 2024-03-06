@@ -21,7 +21,7 @@ export default [
       },
       {
         path: "about",
-        meta: { title: "about", KeepAlive, icon: "HomeFilled" },
+        meta: { title: "关于", KeepAlive, icon: "HomeFilled" },
         name: "about",
         component: () => import("@/view/about/index.vue")
       },
@@ -30,6 +30,12 @@ export default [
         meta: { title: "emoji", KeepAlive, icon: "HomeFilled" },
         name: "emoji",
         component: () => import("@/view/emoji/index.vue")
+      },
+      {
+        path: "from",
+        meta: { title: "表单封装", KeepAlive, icon: "Filter" },
+        name: "from",
+        component: () => import("@/view/from/index.vue")
       }
     ]
   }

@@ -4,26 +4,13 @@ function fn(n, m) {
   function hasBolck() {
     return !arrs[i] || arrs[i][j] !== 0;
   }
-  while (1) {
-    arrs[i][j] = num++;
-    i += stepi;
-    j += stepj;
-    if (hasBolck()) {
-      i -= stepi;
-      j -= stepj;
-      if (stepi === 0) {
-        stepi = stepj;
-        stepj = 0;
-      } else {
-        stepj -= stepi;
-        stepi = 0;
-      }
-      i += stepi;
-      j += stepj;
-      if (hasBolck()) break;
-    }
+
+  for (let index = 1; index < n * m; index++) {
+    // if(){
+    // }else{
+    //   arrs[i][j] == index
+    // }
   }
-  console.log(arrs);
 }
 
 fn(5, 6);
