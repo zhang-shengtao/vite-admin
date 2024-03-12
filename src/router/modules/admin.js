@@ -4,6 +4,7 @@ const KeepAlive = true;
 /**
  * 动态路由
  * @param {Boolean} meta.hidden 为true表示不显示在菜单中
+ * @param {Boolean} meta.KeepAlive 为true表示缓存该组件
  * @module []
  */
 export default [

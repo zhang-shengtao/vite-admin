@@ -15,7 +15,8 @@ import "virtual:svg-icons-register";
 defineProps({
   name: {
     type: String,
-    required: true
+    required: true,
+    default: ""
   },
   size: {
     type: Number,
