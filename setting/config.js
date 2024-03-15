@@ -7,7 +7,7 @@
  */
 const config = {
   host: true,
-  open: true,
+  open: false,
   trednsRouter: false,
   baseUrl: "http:127.0.0.1",
   key: "USER"

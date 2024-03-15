@@ -16,7 +16,6 @@
 import { userPinia } from "@/pinia";
 import MenuItem from "./MenuItem.vue";
 const { isCollapse, isPc, layoutType, menuArr } = storeToRefs(userPinia());
-
 const collapse = computed(() => {
   let collapse = isCollapse.value;
   if (layoutType.value == "top" || !isPc.value) {

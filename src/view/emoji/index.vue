@@ -1,45 +1,48 @@
 <template>
-  <el-card>
-    <el-tabs v-model="activeName" class="demo-tabs">
-      <el-tab-pane label="微信表情" name="weixin">
-        <img
-          class="emoij"
-          v-for="(wx, i) in icon.weixin"
-          :key="wx"
-          :src="`https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/${i}.gif`"
-          :alt="wx"
-        />
-      </el-tab-pane>
-      <el-tab-pane label="emoij表情" name="second">
-        <span class="emoij" v-for="emo in icon.emojiList" :key="emo">{{ emo }}</span>
-      </el-tab-pane>
-      <el-tab-pane label="el-icon" name="elIcon">
-        <div class="emoij border" @click="copyIconTag(item, $event)" v-for="(item, index) in elIcon" :key="index">
-          <Icon :name="item" :size="30" color="#585555de" />
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="iconify图标库" name="iconify">
-        <Icon
-          class="emoij"
-          :name="item"
-          :size="30"
-          v-for="(item, index) in icon.iconify"
-          :key="index"
-          color="#585555de"
-        />
-      </el-tab-pane>
-      <el-tab-pane label="自定义图标" name="icon">
-        <Icon
-          class="emoij"
-          :name="item"
-          :size="30"
-          v-for="(item, index) in icon.myIcons"
-          :key="index"
-          color="#585555de"
-        />
-      </el-tab-pane>
-    </el-tabs>
-  </el-card>
+  <div>
+    <el-card>
+      <el-tabs v-model="activeName" class="demo-tabs">
+        <el-tab-pane label="微信表情" name="weixin">
+          <img
+            class="emoij"
+            v-for="(wx, i) in icon.weixin"
+            :key="wx"
+            :src="`https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/${i}.gif`"
+            :alt="wx"
+          />
+        </el-tab-pane>
+        <el-tab-pane label="emoij表情" name="second">
+          <span class="emoij" v-for="emo in icon.emojiList" :key="emo">{{ emo }}</span>
+        </el-tab-pane>
+        <el-tab-pane label="el-icon" name="elIcon">
+          <div class="emoij border" @click="copyIconTag(item, $event)" v-for="(item, index) in elIcon" :key="index">
+            <Icon :name="item" :size="30" color="#585555de" />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="iconify图标库" name="iconify">
+          <Icon
+            class="emoij"
+            :name="item"
+            :size="30"
+            v-for="(item, index) in icon.iconify"
+            :key="index"
+            color="#585555de"
+          />
+        </el-tab-pane>
+        <el-tab-pane label="自定义图标" name="icon">
+          <Icon
+            class="emoij"
+            :name="item"
+            :size="30"
+            v-for="(item, index) in icon.myIcons"
+            :key="index"
+            color="#585555de"
+          />
+        </el-tab-pane>
+      </el-tabs>
+    </el-card>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script setup name="emoji">

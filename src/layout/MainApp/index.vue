@@ -1,6 +1,6 @@
 <template>
   <el-main class="MainApp">
-    <el-scrollbar style="padding: 15px; box-sizing: border-box" ref="scrollbarRef">
+    <el-scrollbar style="padding: 15px; box-sizing: border-box">
       <router-view v-slot="{ Component, route }">
         <transition name="fade-transform" mode="out-in">
           <keep-alive :include="KeepAlive" :max="10">
@@ -15,21 +15,6 @@
 <script setup name="minapp">
 import { userPinia } from "@/pinia";
 const { KeepAlive } = storeToRefs(userPinia());
-const scrollbarRef = ref(null);
-const main_height = ref("auto");
-
-function mainHeight() {
-  main_height.value = scrollbarRef.value.$el.clientHeight - 30 + "px";
-}
-
-onMounted(() => {
-  mainHeight();
-  window.addEventListener("resize", mainHeight);
-});
-
-onBeforeMount(() => {
-  window.removeEventListener("resize", mainHeight);
-});
 </script>
 
 <style lang="scss" scoped>

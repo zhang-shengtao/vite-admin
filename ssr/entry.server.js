@@ -29,8 +29,8 @@ class myPromise {
     return false;
   }
   #nextTick(fn) {
-    if (typeof process === "object" && typeof process.#nextTick === "function") {
-      process.#nextTick(fn);
+    if (typeof process === "object" && typeof process.nextTick === "function") {
+      process.nextTick(fn);
     } else if (typeof MutationObserver === "function") {
       const ab = new MutationObserver(fn);
       const textNode = document.createTextNode("1");

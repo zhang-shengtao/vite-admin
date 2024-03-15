@@ -12,7 +12,7 @@ export const allRouter = routes;
 
 export function createRouter() {
   const Router = _createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes,
     strict: true
   });
