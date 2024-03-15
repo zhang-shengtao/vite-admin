@@ -29,6 +29,7 @@ export default defineStore("user", () => {
       if (!item.meta.hidden) {
         if (item.children && item.children.length >= 1) {
           let children = menuArr(item.children, item.path.startsWith("http") ? "" : item.path);
+
           if (item.path != "/") {
             item.children = children;
             if (children.length == 1) item = children[0];
