@@ -15,10 +15,19 @@ export default defineConfig({
   },
   server: {
     host: config.host,
-    open: config.open
+    open: config.open,
+    cors: true,
+    proxy: {
+      "^/api": {
+        target: config.baseUrl,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, "")
+      }
+    }
   },
   build: {
     outDir: "build",
+    copyPublicDir: false,
     terserOptions: {
       compress: {
         drop_console: true,
@@ -28,19 +37,14 @@ export default defineConfig({
     rollupOptions: {
       external: ["vue", "vue-demi", "pinia", "vue-router", "element-plus", "axios", "@element-plus/icons-vue"],
       output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            return "vendor";
+        assetFileNames(pattern) {
+          if (pattern.name.endsWith(".css")) return "css/[name]-[hash].css";
+          if ([".png", ".jpg", ".svg", "jpeg", ".webp", ".gif", ".ico"].some((ext) => pattern.name.endsWith(ext))) {
+            return "img/[name]-[hash].[ext]";
           }
+          return "assest/[name]-[hash].[ext]";
         },
-        assetFileNames({ name }) {
-          const isImg = ["png", "jpg", "svg", "jpeg", "webp"].includes(name.split(".")[1]);
-          if (isImg) return "img/[name]-[hash].[ext]";
-          return "[ext]/[name]-[hash].[ext]";
-        },
-        chunkFileNames() {
-          return "js/[name]-[hash].js";
-        },
+        chunkFileNames: "js/[name]-[hash].js",
         entryFileNames: "js/[name]-[hash].js"
       }
     }

@@ -3,7 +3,7 @@ import config from "#/setting/config";
 
 export const requestToken = [];
 
-export default request = axios.create({
+const request = axios.create({
   baseURL: config.baseURL + "/api"
 });
 
@@ -45,3 +45,5 @@ function errorHandle(code, data) {
   }
   return Promise.reject(data);
 }
+
+export default request;

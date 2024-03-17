@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <MySearch />
+    <el-card class="box-card" style="margin-top: 15px">
       <MyTabel stripe border show-summary :data="tableData" ref="MyTabels" :columns="tabelHeaders">
         <template #input="{ column, $index }">
-          <!-- <el-input v-model="text" placeholder="请输入zip"></el-input> -->
-          <component is="el-input" :="obj" />
+          <el-input v-model="text" placeholder="请输入zip"></el-input>
         </template>
         <template #edit="{ row, column, $index }">
           <el-tag>Tag{{ $index }}</el-tag>
@@ -30,7 +30,11 @@
 </template>
 
 <script setup name="home">
-import { debounceRef } from "@/utils/method";
+const props = defineProps(["test"]); // 通过路由传参
+console.log(props);
+
+// const MySearch
+
 const url = "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg";
 const tableData = [
   {
@@ -72,9 +76,6 @@ const tableData = [
 ];
 
 const text = ref("");
-watch(text, (val) => {
-  console.log(val);
-});
 
 // const arraySpanMethod = ({ row, column, rowIndex, columnIndex }) => {
 //   if (rowIndex % 2 === 0) {
@@ -85,11 +86,6 @@ watch(text, (val) => {
 //     }
 //   }
 // };
-
-const obj = {
-  placeholder: "请输入",
-  "v-model": text
-};
 
 function getSummaries({ columns, data }) {
   // console.log(columns, data);

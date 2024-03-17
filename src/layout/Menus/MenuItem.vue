@@ -1,16 +1,16 @@
 <template>
-  <el-sub-menu :index="item.path" v-if="item.children && item.children.length > 1">
+  <el-sub-menu :index="item.path" v-if="item.children && item.children.length">
     <template #title>
-      <Icon v-if="item.meta.icon" :name="item.meta.icon" />
-      <span>{{ item.meta.title }}</span>
+      <Icon v-if="item.meta && item.meta.icon" :name="item.meta.icon" />
+      <span>{{ (item.meta && item.meta.title) || "默认" }}</span>
     </template>
     <menu-item v-for="items in item.children" :key="items.path" :item="items" />
   </el-sub-menu>
 
   <AppLink v-else :path="item.path">
     <el-menu-item :index="item.path">
-      <Icon v-if="item.meta.icon" :name="item.meta.icon" />
-      <template #title>{{ item.meta.title }}</template>
+      <Icon v-if="item.meta && item.meta.icon" :name="item.meta.icon" />
+      <template #title>{{ (item.meta && item.meta.title) || "默认" }}</template>
     </el-menu-item>
   </AppLink>
 </template>

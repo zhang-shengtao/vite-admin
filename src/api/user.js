@@ -1,5 +1,13 @@
 import request from "@/utils/request";
 
-function login() {
+export function login() {
+  return request({});
+}
+
+export function userInfo() {
+  return request({});
+}
+
+export function routerInfo() {
   return request({});
 }

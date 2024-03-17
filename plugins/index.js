@@ -22,7 +22,7 @@ export default function () {
       resolvers: [ElementPlusResolver()]
     }),
     viteCompression({
-      threshold: 512000, // 超过500k就压缩
+      threshold: 2097152, // 超过2M就压缩
       algorithm: "gzip",
       deleteOriginFile: false
     }),
@@ -53,7 +53,7 @@ export default function () {
         {
           name: "axios",
           var: "axios",
-          path: "https://cdn.shiankuaixian.com/web/axios.min.js"
+          path: "http://cdn.shiankuaixian.com/web/axios.min.js"
         },
         {
           name: "@element-plus/icons-vue",
@@ -64,10 +64,11 @@ export default function () {
     }),
     AutoImport({
       dts: false,
-      imports: ["vue", "vue-router", "pinia"]
+      imports: ["vue", "vue-router", "pinia"],
+      resolvers: [ElementPlusResolver()]
     }),
     visualizer({
-      open: true,
+      open: false,
       file: "stats.html"
     }),
     {

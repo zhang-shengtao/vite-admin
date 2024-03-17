@@ -52,6 +52,10 @@ import icon from "@/assets/emoji";
 const elIcon = Object.keys(ElementPlusIconsVue);
 const activeName = ref("weixin");
 
+const props = defineProps(["test"]);
+
+console.log(props);
+
 function copyIconTag(txts, e) {
   coyp({ txts }, e.target).then(() => {
     ElMessage.success("复制成功");

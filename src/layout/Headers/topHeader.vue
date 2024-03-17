@@ -13,7 +13,7 @@
     <el-space class="right column-center" :size="15">
       <DropdownMenu MagicStick />
       <el-autocomplete
-        v-model.trim="searchMenu"
+        v-model.trim="searchMenus"
         clearable
         :fetch-suggestions="querySearch"
         placeholder="请输入页面名称"
@@ -27,21 +27,21 @@
 
 <script setup>
 import { userPinia } from "@/pinia";
-const { isCollapse, searchPage, isPc } = storeToRefs(userPinia());
+const { isCollapse, searchMenu, isPc } = storeToRefs(userPinia());
 import DropdownMenu from "./DropdownMenu.vue";
-const searchMenu = ref("");
+const searchMenus = ref("");
 const router = useRouter();
 
 function querySearch(searchName, callback) {
   if (searchName) {
-    callback(searchPage.value.filter((item) => item?.value.includes(searchName)));
+    callback(searchMenu.value.filter((item) => item?.value.includes(searchName)));
   } else {
     callback([]);
   }
 }
 function handleSelect({ path }) {
-  searchMenu.value = "";
-  if (path.includes("http") && path.includes("://")) {
+  searchMenus.value = "";
+  if (path.startsWith("http")) {
     window.open(path);
   } else {
     router.push({ path });

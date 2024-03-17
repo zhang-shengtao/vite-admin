@@ -1,6 +1,6 @@
 import admin from "./admin";
 
 /**
- * 动态路由需要权限的
+ * 动态的路由
  * */
 export default [...admin];

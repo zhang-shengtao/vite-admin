@@ -1,5 +1,4 @@
 import Clipboard from "clipboard";
-import myWorkerjs from "./sliceFile.js?raw";
 /**
  * 判断类型
  * @param value 要判断的值
@@ -103,30 +102,6 @@ export function file({ multiple = false, accept = "image/*" } = { multiple: fals
       input = null;
       flieList = null;
     }
-  });
-}
-
-/**
- * 防抖ref
- *@param value 绑定的默认值
- *@param t 多久后更改数据
- */
-export function debounceRef(value = "", t = 1000) {
-  let time;
-  return customRef((track, trigger) => {
-    return {
-      get() {
-        track();
-        return value;
-      },
-      set(val) {
-        if (time) clearTimeout(time);
-        time = setTimeout(() => {
-          trigger();
-          value = val;
-        }, t);
-      }
-    };
   });
 }
 
