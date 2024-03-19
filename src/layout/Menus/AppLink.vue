@@ -5,17 +5,25 @@
 </template>
 
 <script setup>
-import { RouterLink } from "vue-router";
 import { userPinia } from "@/pinia";
 const { isCollapse, isPc } = storeToRefs(userPinia());
 
-const props = defineProps(["path"]);
+const props = defineProps({
+  path: {
+    type: String,
+    require: true
+  },
+  target: {
+    type: Boolean,
+    default: false
+  }
+});
 const to = reactive({
   to: props.path
 });
 const dom = ref("RouterLink");
 
-if (props.path.startsWith("http")) {
+if (props.path.startsWith("http") || props.target) {
   dom.value = "a";
   delete to.to;
   to.href = props.path;

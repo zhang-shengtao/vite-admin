@@ -10,7 +10,7 @@ import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 </script>
 
 <style lang="scss">
-// @use "element-plus/dist/index.css"; // 走cdn的话就注释
+@use "element-plus/dist/index.css"; // 走cdn的话就注释
 @use "element-plus/theme-chalk/dark/css-vars.css";
 @use "element-plus/theme-chalk/display.css";
 @use "@/style/themeDefaut.scss";

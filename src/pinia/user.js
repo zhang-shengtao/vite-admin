@@ -28,7 +28,8 @@ function menuArr(allArr, path = "") {
     if (item.children && item.children.length && item.path != "/") {
       item.children = menuArr(item.children, item.path).arr;
     }
-    if (!item.hidden) item.path === "/" ? arr.push(...menuArr(item.children).arr) : arr.push(item);
+    const isChildren = item.path === "/" && item.children && item.children.length;
+    if (!item.hidden) isChildren ? arr.push(...menuArr(item.children).arr) : arr.push(item);
     if (item.KeepAlive && item.name) KeepAlive.push(item.name);
   });
   return { arr, KeepAlive };
@@ -68,7 +69,6 @@ export default defineStore("user", () => {
     searchMenu: [] // 要搜索的页面一维数组
   });
   const layoutData = reactive({ ...layout });
-
   function router(arr) {
     const { arr: menuAll, KeepAlive } = menuArr(arr || routes);
     data.KeepAlive = KeepAlive;
@@ -77,7 +77,6 @@ export default defineStore("user", () => {
   }
   // 不需要动态路直拿全部路由
   if (!config.isAddRouter) router();
-
   function getUserInfo() {
     return new Promise((resolve, rejected) => {
       userInfo()
@@ -96,7 +95,6 @@ export default defineStore("user", () => {
       router(arr);
     });
   }
-
   watch(
     [layoutData, winWH],
     (newVal, val) => {
@@ -124,6 +122,5 @@ export default defineStore("user", () => {
     },
     { immediate: true }
   );
-
   return { ...toRefs(layoutData), ...toRefs(data), getUserInfo };
 });
