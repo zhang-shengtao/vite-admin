@@ -12,7 +12,7 @@ const icon = (name) => defineComponent(() => () => h(Icon, { name }));
 
 const toCom = ["prefix-icon", "suffix-icon"]; // elementPlus提供的内部组件props需要转换为函数
 const slotName = ["elOptionGroup", "elOption"]; // elementPlus提供的内部组件名称渲染时直接用
-const delKey = ["key", "slotName", "slot", "data"]; // 需要删除的key
+const delKey = ["key", "slot", "data", "slotName"]; // 需要删除的key
 
 const data = reactive({
   val1: "",
@@ -31,30 +31,45 @@ const com = {
   elSelect: {
     key: "val2",
     placeholder: "请选择val2的值",
-    slot: {
-      default: {
-        slotName: "elOptionGroup",
-        lableKey: "lable",
+    slot: [
+      {
+        slotName: "default",
+        com: "elOptionGroup",
         data: [
           {
-            lable: "选项一",
-            data: [{}]
+            lable: "第一组",
+            options: [
+              {
+                value: "1-1",
+                label: "第一组1"
+              },
+              {
+                value: "1-2",
+                label: "第一组2"
+              }
+            ]
           },
           {
-            lable: "选项二"
+            lable: "第二组",
+            options: [
+              {
+                value: "2-1",
+                label: "第二组1"
+              },
+              {
+                value: "2-2",
+                label: "第二组2"
+              }
+            ]
           }
-        ],
-        slot: {
-          slotName: "elOption"
-        }
+        ]
       }
-    }
+    ]
   }
 };
 
 function handleProps(prop) {
   const obj = { ...prop };
-
   let keys = Object.keys(obj);
   keys.forEach((item) => {
     if (toCom.includes(item)) obj[item] = obj[item](icon);
