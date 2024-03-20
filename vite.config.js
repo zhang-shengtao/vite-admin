@@ -25,15 +25,18 @@ export default defineConfig({
       }
     }
   },
+  preview: {
+    proxy: {
+      "^/api": {
+        target: config.baseUrl,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, "")
+      }
+    }
+  },
   build: {
     outDir: "build",
     copyPublicDir: false,
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
     rollupOptions: {
       external: ["vue", "vue-demi", "pinia", "vue-router", "element-plus", "axios", "@element-plus/icons-vue"],
       output: {

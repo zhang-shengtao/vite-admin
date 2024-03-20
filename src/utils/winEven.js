@@ -1,5 +1,4 @@
 import { debounce } from "lodash-es";
-import { clearDiv } from "@/directive/rightmens/index.js";
 
 export const Mymap = new WeakMap();
 export const winWH = reactive({
@@ -11,12 +10,9 @@ export const winWH = reactive({
 function onResize() {
   winWH.vw = document.documentElement.clientWidth;
   winWH.vh = document.documentElement.clientHeight;
-  clearDiv({ target: 1 });
 }
 
-function onMousedown(e) {
-  clearDiv(e);
-}
+function onMousedown(e) {}
 function copy(e) {
   e.preventDefault();
   e.clipboardData.setData("text/plain", "不给复制打钱");

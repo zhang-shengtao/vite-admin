@@ -9,6 +9,16 @@ export function typeOf(value) {
 }
 
 /**
+ * n-m的随机整数
+ * @param n 最小值
+ * @param m 最大值
+ * @returns String
+ */
+export function random(n, m) {
+  return Math.floor(Math.random() * (m - n) + n);
+}
+
+/**
  * @param {String|Array} txts  要复制的文字
  * @param {String|Array} txts  要复制的图片
  * @returns Promise
@@ -106,7 +116,7 @@ export function file({ multiple = false, accept = "image/*" } = { multiple: fals
 }
 
 /**
- * 文件切割
+ * 文件切片
  * @param { File | Array[File] } file   是否多选 { File | Array[File] }
  * @param {Number} point 断点续传的分片位置
  * @returns {Array} Array[Object]

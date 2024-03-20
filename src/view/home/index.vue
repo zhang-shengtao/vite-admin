@@ -1,8 +1,17 @@
 <template>
   <div>
-    <MySearch> </MySearch>
-    <el-card class="box-card" style="margin-top: 15px">
-      <MyTabel stripe border show-summary :data="tableData" ref="MyTabels" :columns="tabelHeaders">
+    <el-card class="box-card">
+      <el-button style="margin-top: 10px" @click="clearSelection">clearSelection</el-button>
+      <MyTable
+        stripe
+        border
+        show-summary
+        :data="tableData"
+        :total="30"
+        :ref="(news) => (MyTabels = news?.elTable)"
+        @handlePagination="handlePagination"
+        :columns="tabelHeaders"
+      >
         <template #input="{ column, $index }">
           <el-input v-model="text" placeholder="请输入zip"></el-input>
         </template>
@@ -23,8 +32,7 @@
         <template #empty>
           <div>空的数据</div>
         </template>
-      </MyTabel>
-      <el-button style="margin-top: 10px" @click="clearSelection">clearSelection</el-button>
+      </MyTable>
     </el-card>
   </div>
 </template>
@@ -75,81 +83,10 @@ const tableData = [
 
 const text = ref("");
 
-// const tabelHeaders = [
-//   {
-//     type: "selection",
-//     width: "120",
-//     fixed: true
-//   },
-//   {
-//     label: "时间",
-//     prop: "date",
-//     sortable: true,
-//     width: "300"
-//   },
-//   {
-//     label: "整体",
-//     align: "left",
-//     children: [
-//       {
-//         label: "姓名",
-//         prop: "name",
-//         width: "300"
-//       },
-//       {
-//         label: "地址信息",
-//         children: [
-//           {
-//             label: "年龄",
-//             prop: ({ row }) => row.age,
-//             width: "300",
-//             "column-key": "age",
-//             filters: [
-//               { text: "11岁", value: 11 },
-//               { text: "12岁", value: 12 },
-//               { text: "13岁", value: 13 }
-//             ],
-//             "filter-method": (value, row) => row.age === value
-//           },
-//           {
-//             label: "地址",
-//             prop: "address",
-//             width: "300"
-//           },
-//           {
-//             label: "state1111",
-//             prop: "state",
-//             width: "300"
-//           },
-//           {
-//             label: "图片",
-//             prop: "url",
-//             width: "300",
-//             slot: "image"
-//           },
-//           {
-//             label: "zpiyayya",
-//             prop: "zip",
-//             width: "300",
-//             header: "input"
-//           }
-//         ]
-//       }
-//     ]
-//   },
-//   {
-//     label: "编辑",
-//     fixed: "right",
-//     slot: "edit",
-//     width: "100"
-//   }
-// ];
-
 const tabelHeaders = [
   {
     type: "selection",
     width: "120",
-
     fixed: true
   },
   {
@@ -159,65 +96,136 @@ const tabelHeaders = [
     width: "300"
   },
   {
-    label: "姓名",
-    prop: "name",
-    width: "300"
-  },
-  {
-    label: "state1111",
-    prop: "state",
-    width: "300",
-    sortable: true
-  },
-  {
-    label: "年龄",
-    prop: "age",
-    width: "300",
-    "column-key": "age",
-    filters: [
-      { text: "11岁", value: 11 },
-      { text: "12岁", value: 12 },
-      { text: "13岁", value: 13 }
-    ],
-    "filter-method": (value, row) => row.age === value
-  },
-  {
-    label: "地址",
-    prop: "address",
-    width: "300"
-  },
-
-  {
-    label: "zpiyayya",
-    prop: "zip",
-    header: "input",
-    width: "300"
-  },
-  {
-    label: "图片",
-    prop: "url",
-    width: "300",
-    slot: "image"
+    label: "整体",
+    align: "left",
+    children: [
+      {
+        label: "姓名",
+        prop: "name",
+        width: "300"
+      },
+      {
+        label: "地址信息",
+        children: [
+          {
+            label: "年龄",
+            prop: ({ row }) => row.age,
+            width: "300",
+            "column-key": "age",
+            filters: [
+              { text: "11岁", value: 11 },
+              { text: "12岁", value: 12 },
+              { text: "13岁", value: 13 }
+            ],
+            "filter-method": (value, row) => row.age === value
+          },
+          {
+            label: "地址",
+            prop: "address",
+            width: "300"
+          },
+          {
+            label: "state1111",
+            prop: "state",
+            width: "300"
+          },
+          {
+            label: "图片",
+            prop: "url",
+            width: "300",
+            slot: "image"
+          },
+          {
+            label: "zpiyayya",
+            prop: "zip",
+            width: "300",
+            header: "input"
+          }
+        ]
+      }
+    ]
   },
   {
     label: "编辑",
     fixed: "right",
     slot: "edit",
     width: "100"
-  },
-  {
-    type: "expand",
-    slot: "expand",
-    label: ">"
   }
 ];
 
+// const tabelHeaders = [
+//   {
+//     type: "selection",
+//     width: "120",
+
+//     fixed: true
+//   },
+//   {
+//     label: "时间",
+//     prop: "date",
+//     sortable: true,
+//     width: "300"
+//   },
+//   {
+//     label: "姓名",
+//     prop: "name",
+//     width: "300"
+//   },
+//   {
+//     label: "state1111",
+//     prop: "state",
+//     width: "300",
+//     sortable: true
+//   },
+//   {
+//     label: "年龄",
+//     prop: "age",
+//     width: "300",
+//     "column-key": "age",
+//     filters: [
+//       { text: "11岁", value: 11 },
+//       { text: "12岁", value: 12 },
+//       { text: "13岁", value: 13 }
+//     ],
+//     "filter-method": (value, row) => row.age === value
+//   },
+//   {
+//     label: "地址",
+//     prop: "address",
+//     width: "300"
+//   },
+
+//   {
+//     label: "zpiyayya",
+//     prop: "zip",
+//     header: "input",
+//     width: "300"
+//   },
+//   {
+//     label: "图片",
+//     prop: "url",
+//     width: "300",
+//     slot: "image"
+//   },
+//   {
+//     label: "编辑",
+//     fixed: "right",
+//     slot: "edit",
+//     width: "100"
+//   },
+//   {
+//     type: "expand",
+//     slot: "expand",
+//     label: ">"
+//   }
+// ];
+
 const MyTabels = ref(null);
 function clearSelection() {
-  MyTabels.value.elTable.clearSelection();
+  MyTabels.value.clearSelection();
 }
 
-function select(val) {
+function handlePagination(val) {
   console.log(val);
 }
 

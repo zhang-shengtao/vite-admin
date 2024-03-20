@@ -3,18 +3,20 @@
     <Icon class="tag_icon" name="ArrowLeftBold" @click="scroll('left')" />
     <el-scrollbar ref="scrollbar" style="flex: 1" @scroll="(v) => (scrollLeft = v.scrollLeft)">
       <el-space ref="space">
-        <el-button
-          size="small"
-          @click="$router.push({ path: item.path })"
+        <el-tag
           @contextmenu.prevent="openMenu($event)"
-          :type="item.path === $route.path ? 'primary' : ''"
-          v-for="item in tag"
+          @click="$router.push({ path: item.path })"
+          @mouseenter="item.closable = true"
+          @mouseleave="item.closable = false"
+          :closable="!!item.closable"
+          @close="delTag(i)"
+          disable-transitions
+          style="cursor: pointer"
+          :effect="item.path === $route.path ? 'dark' : 'light'"
+          v-for="(item, i) in tag"
           :key="item.path"
-          class="tag_btn"
+          >{{ item.name }}</el-tag
         >
-          {{ item.name }}
-          <Icon class="CircleCloseFilled" @click.stop="delTag(item)" :size="15" color="red" name="CircleCloseFilled" />
-        </el-button>
       </el-space>
     </el-scrollbar>
     <Icon class="tag_icon" name="ArrowRightBold" @click="scroll('right')" />
@@ -39,12 +41,12 @@ function scroll(v) {
 }
 
 function openMenu(val) {
-  //   console.log(val);
+  console.log(val);
   // 右键删除待做
 }
-function delTag(item) {
-  if (item.path === route.path) return ElMessage("不能删除当前所在的页面");
-  const i = tag.findIndex((i) => i.path == item.path);
+function delTag(i) {
+  const item = tag[i];
+  if (item.path === route.path) return ElMessage("正在浏览当前页面不能删除");
   tag.splice(i, 1);
 }
 
@@ -75,16 +77,6 @@ watch(
     display: flex;
     align-items: center;
     height: 100%;
-  }
-  .tag_btn:hover .CircleCloseFilled {
-    color: red;
-    opacity: 0.8;
-    display: block;
-  }
-
-  .CircleCloseFilled {
-    padding-left: 5px;
-    display: none;
   }
 
   :deep(.el-scrollbar__bar.is-horizontal) {

@@ -6,6 +6,7 @@ const target = true;
  * 动态路由
  * @param {Boolean} hidden 为true表示不显示在菜单中
  * @param {Boolean} KeepAlive 为true表示缓存该组件
+ * @param {Boolean} target 表示属于项目的正常路由但是要打开新的页面
  * @module []
  */
 export default [
@@ -25,7 +26,6 @@ export default [
         path: "about",
         meta: { title: "关于", icon: "HomeFilled" },
         name: "about",
-        target,
         component: () => import("@/view/about/index.vue")
       },
       {

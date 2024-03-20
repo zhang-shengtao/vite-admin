@@ -2,7 +2,7 @@ import { typeOf, IsPC, file } from "@/utils/method";
 
 // v-file:[order1].xls.multiple="testV"
 export function files(el, binding) {
-  if (typeOf(binding.value) !== "function") {
+  if (!["function", "asyncfunction"].includes(typeOf(binding.value))) {
     return console.error(new Error("请绑定回调函数"));
   }
   el.style.cursor = "pointer";
