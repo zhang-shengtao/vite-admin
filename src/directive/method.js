@@ -42,12 +42,11 @@ export function isScroll(el, binding, vnode, prevNode) {
   let childrenDomWH = "";
   let isDown = false;
   let cur = 0; // 列表滑动位置
-  let fl = 150; //弹力公式:位置*=弹力/(弹 力+位置)
+  let fl = 150; //弹力公式:位置*=弹力/(弹力+位置)
   let vy = 0;
   let isInTransition = false; // 是否在滚动中
   const offset = 50;
   // 鼠标按下
-  // el.addEventListener(typeEventdown, Eventdown); // 不能用DOM二级事件,会重复绑定
   el[`on${typeEventdown}`] = Eventdown;
   function Eventdown(e) {
     if (isInTransition) return; //如果在滚动中，则中止执行

@@ -14,8 +14,8 @@ function onResize() {
 
 function onMousedown(e) {}
 function copy(e) {
-  e.preventDefault();
-  e.clipboardData.setData("text/plain", "不给复制打钱");
+  // e.preventDefault();
+  // e.clipboardData.setData("text/plain", "不给复制打钱");
 }
 
 window.onresize = debounce(onResize, 300);
